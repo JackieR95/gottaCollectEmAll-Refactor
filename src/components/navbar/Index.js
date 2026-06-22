@@ -1,0 +1,3 @@
+function Navbar({ title, logo }) {
+
+}
