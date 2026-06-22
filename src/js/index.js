@@ -103,31 +103,21 @@ class Card {
 
   // This method fetches cards from the API and renders them into the specified container
   fetchAndRender(url, containerId) {
-    console.log("=== FETCH START ===");
-    console.log("Fetching from URL:", url, "into container:", containerId);
-
     const container = document.getElementById(containerId);
-    console.log("Container element found:", container);
 
-    // Fetch the data from the API
     fetch(url)
       .then((response) => {
-        console.log("Response received:", response.status, response.ok);
         if (!response.ok)
           throw new Error(`HTTP error! Status: ${response.status}`); // Throw an error if the response is not ok
         return response.json();
       })
       .then((data) => {
-        console.log("JSON parsed, full data:", data);
         // Get the cards from the data
         const cards = data.data;
-        console.log("Fetched cards count:", cards ? cards.length : 0);
-        console.log("First card:", cards ? cards[0] : "none");
         // Call the renderCards method to render the fetched cards into the specified container
         this.renderCards(cards, containerId);
       })
       .catch((error) => {
-        console.error("Failed to fetch cards:", error);
         // Render 20 placeholders with null cards so createCardElement shows back image if API fails
         const placeholderArray = new Array(20).fill(null);
         // Call the renderCards method to render the placeholders
