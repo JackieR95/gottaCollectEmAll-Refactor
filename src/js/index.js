@@ -7,7 +7,7 @@ Lab: Final Project - GottaCollectEmAll
 
 // Import the general styles
 import "./general.js";
-//import CardContainer from "../components/CardsContainer.js";
+import { CardContainer } from "../components/CardContainer.js";
 
 // Import the function to load the navbar
 import { loadNavbar } from "./navbar.js";
@@ -73,6 +73,7 @@ class Card {
     `;
   }
 
+  /*
   // This method renders the cards layout for the cards page
   renderCardsLayout() {
     // Get the container by class name
@@ -97,13 +98,15 @@ class Card {
     </div>
     `;
   }
+  */
 
 
   ////////////////////////////////////////Rendering Methods - Fetch //////////////////////////////////////////////////////
 
   // This method fetches cards from the API and renders them into the specified container
-  fetchAndRender(url, containerId) {
+  fetchAndRender(setName, containerId) {
     const container = document.getElementById(containerId);
+    let url = "https://api.pokemontcg.io/v2/cards?q=set.id:" + setName;
 
     fetch(url)
       .then((response) => {
@@ -115,9 +118,10 @@ class Card {
         // Get the cards from the data
         const cards = data.data;
         // Call the renderCards method to render the fetched cards into the specified container
-        this.renderCards(cards, containerId);
+        container.appendChild(CardContainer({ cards }));
       })
       .catch((error) => {
+        console.error("Failed to fetch cards:", error);
         // Render 20 placeholders with null cards so createCardElement shows back image if API fails
         const placeholderArray = new Array(20).fill(null);
         // Call the renderCards method to render the placeholders
@@ -125,6 +129,7 @@ class Card {
       });
   }
 
+  /*
   // This method renders the cards into the specified container
   renderCards(cardsArray, containerId) {
     //Get the container by ID
@@ -138,6 +143,7 @@ class Card {
       container.appendChild(cardElem);
     });
   }
+  */
 
   // This method renders the collection cards from localStorage
   renderCollectionCards() {
@@ -216,6 +222,7 @@ class Card {
 
   //////////////////////////////////////// Card Handling //////////////////////////////////////////////////////
 
+
   // This method creates a card element with buttons for incrementing, decrementing and adding to collection
   createCardElement(card) {
     // Create a column element for the card with a div wrapped around
@@ -272,6 +279,7 @@ class Card {
     // Update the collection in localStorage
     localStorage.setItem("myCollection", JSON.stringify(collection));
   }
+
 
   // This method sets up the buttons for incrementing, decrementing and adding to collection for each card
   setupCardButtons(cardElement, card) {
@@ -357,15 +365,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render the appropriate layout based on the selected set or if it's the cards page
   if (selectedSet === "base") {
     cardApp.renderBaseLayout();
-    cardApp.fetchAndRender(cardApp.apiUrl, "cardsContainer");
+    cardApp.fetchAndRender("base1", "cardsContainer");
   } else if (selectedSet === "collection") {
     cardApp.renderCollectionLayout();
     cardApp.renderCollectionCards();
   } else if (isCardsPage) {
     // This is the generic "All Cards" page
-    cardApp.renderCardsLayout(); //  renders search bar + container
+    // cardApp.renderCardsLayout(); //  renders search bar + container
     cardApp.fetchAndRender(
-      "https://api.pokemontcg.io/v2/cards?q=set.id:base1",
+      "base1",
       "cardsContainer"
     );
   } else {
@@ -373,6 +381,26 @@ document.addEventListener("DOMContentLoaded", () => {
     cardApp.fetchAndRender(cardApp.apiUrl, cardApp.defaultContainer); // default to base set
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////// SEARCH FILTER ////////////////////////////////////
+
+
+
+
+
+
 
 //Code removed for now, to be added later when i have time to make it work
 /*
