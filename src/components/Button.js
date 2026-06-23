@@ -1,5 +1,15 @@
-// label: The text to display on the button
+/*
+  BUTTON COMPONENT
 
+  Props:
+    - label: The text to display on the button
+    - classNames: Additional CSS classes to apply to the button
+    - onClick: A function to call when the button is clicked
+    - primaryBtn: A boolean indicating whether the button should be styled as primary
+
+  Functionality:
+    - Creates a button element with the specified properties
+*/
 export function Button({ label, classNames, onClick = null, primaryBtn }) {
     const button = document.createElement('button');
     button.textContent = label;
