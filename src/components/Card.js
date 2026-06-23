@@ -1,9 +1,33 @@
+/*
+  CARD COMPONENT
+
+  Props:
+    - name: The name of the card
+    - image: The URL of the card's image
+    - count: The number of this card in the collection or if it's a new card, the initial count
+
+  Functionality:
+    - Creates a card element with the specified properties
+
+  ToAddFunctionality:
+    - Handle the increment and decrement of the card count
+    - Add the card to the collection when the "Add" button is clicked
+
+  OptionalChanges:
+   - Change "Add" to "Update" when the card is already in the collection
+   - Disable the "Add" button when the card is already in the collection
+*/
+
 import { Button } from "./Button.js";
 
-export function Card({ name, image, count }) {
+export function Card({ id, name, image, count }) {
   // 1. Create the top-level container element (e.g., a div)
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-wrapper text-center p-3";
+
+  let currentCount = count;
+
+
 
   // 2. Create the Image element
   const img = document.createElement("img");
@@ -23,6 +47,22 @@ export function Card({ name, image, count }) {
   const counterDiv = document.createElement("div");
   counterDiv.className = "d-flex align-items-center justify-content-center gap-2 mb-2";
 
+/*
+      // Add event listeners to the buttons
+    decrementBtn.addEventListener("click", () => {
+      let value = parseInt(counter.textContent, 10);
+      if (value > 0) counter.textContent = value - 1;
+    });
+
+    incrementBtn.addEventListener("click", () => {
+      let value = parseInt(counter.textContent, 10);
+      counter.textContent = value + 1;
+    });
+
+    addButton.addEventListener("click", () => {
+      const count = parseInt(counter.textContent, 10) || 0;
+
+*/
   // 5. Use your imported Button component to create the Decrement button node
   const decBtn = Button({
     label: "-",
