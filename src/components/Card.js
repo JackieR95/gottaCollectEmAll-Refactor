@@ -15,7 +15,7 @@
 
   OptionalChanges:
    - Change "Add" to "Update" when the card is already in the collection
-   - Disable the "Add" button when the card is already in the collection
+   - Disable the "Add" button when no click of plus has happened
 */
 
 import { Button } from "./Button.js";
@@ -25,8 +25,8 @@ export function Card({ id, name, image, count }) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-wrapper text-center p-3";
 
+  // Declare a count variable that can be updated
   let currentCount = count;
-
 
 
   // 2. Create the Image element
@@ -47,39 +47,45 @@ export function Card({ id, name, image, count }) {
   const counterDiv = document.createElement("div");
   counterDiv.className = "d-flex align-items-center justify-content-center gap-2 mb-2";
 
-/*
-      // Add event listeners to the buttons
-    decrementBtn.addEventListener("click", () => {
-      let value = parseInt(counter.textContent, 10);
-      if (value > 0) counter.textContent = value - 1;
-    });
+  // Add event listeners to the buttons
+  const handleMinus = () => {
+    if (currentCount > 0) {
+      currentCount -= 1;
+    }
+    counterSpan.textContent = currentCount;
+  };
 
-    incrementBtn.addEventListener("click", () => {
-      let value = parseInt(counter.textContent, 10);
-      counter.textContent = value + 1;
-    });
+  // Add event listeners to the buttons
+  const handlePlus = () => {
+    currentCount += 1;
+    counterSpan.textContent = currentCount;
+  };
 
-    addButton.addEventListener("click", () => {
-      const count = parseInt(counter.textContent, 10) || 0;
-
+  /*
+  const handleAdd = () => {
+    currentCount = currentCount || 0;
+  }
 */
+
   // 5. Use your imported Button component to create the Decrement button node
   const decBtn = Button({
     label: "-",
-    classNames: "decrement"
+    classNames: "decrement",
+    onClick: handleMinus
   });
   counterDiv.appendChild(decBtn);
 
   // 6. Create the Counter span
   const counterSpan = document.createElement("span");
   counterSpan.className = "counter";
-  counterSpan.textContent = count; // Your count variable
+  counterSpan.textContent = currentCount; // Your count variable
   counterDiv.appendChild(counterSpan);
 
   // 7. Use your imported Button component to create the Increment button node
   const incBtn = Button({
     label: "+",
-    classNames: "increment"
+    classNames: "increment",
+    onClick: handlePlus
   });
   counterDiv.appendChild(incBtn);
 
@@ -93,10 +99,6 @@ export function Card({ id, name, image, count }) {
     primaryBtn: true
   });
   cardContainer.appendChild(addBtn);
-
-  // Now cardContainer holds the entire node tree structure!
-  // You can append it to your main page layout like this:
-  // document.getElementById('catalog').appendChild(cardContainer);
 
   return cardContainer;
 }
