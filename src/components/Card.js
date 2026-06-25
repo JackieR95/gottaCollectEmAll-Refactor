@@ -20,7 +20,7 @@
 
 import { Button } from "./Button.js";
 
-export function Card({ id, name, image, count }) {
+export function Card({ id, name, image, count, price }) {
   // 1. Create the top-level container element (e.g., a div)
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-wrapper text-center p-3";
@@ -35,6 +35,7 @@ export function Card({ id, name, image, count }) {
   img.alt = name;
   img.className = "img-fluid mb-3";
   img.style.maxHeight = "200px";
+  img.loading = "lazy";
   cardContainer.appendChild(img);
 
   // 3. This matches your visible card title/name placement
@@ -62,6 +63,26 @@ export function Card({ id, name, image, count }) {
   };
 
   /*
+    addButton.addEventListener("click", () => {
+      const count = parseInt(counter.textContent, 10) || 0;
+
+      // Check if the card has an ID and count is greater than 0
+      if (card?.id && count > 0) {
+        for (let i = 0; i < count; i++) {
+          this.addToCollection(card); // Add the card to the collection
+        }
+        // Reset counter to 0
+        counter.textContent = "0";
+
+        // Show toast
+        this.showToast(
+          `${count} ${card.name} card${count > 1 ? "s" : ""
+          } added to your collection!`
+        );
+      }
+    });
+
+
   const handleAdd = () => {
     currentCount = currentCount || 0;
   }
