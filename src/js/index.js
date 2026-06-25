@@ -12,6 +12,12 @@ import { CardContainer } from "../components/CardContainer.js";
 // Import the function to load the navbar
 import { loadNavbar } from "./navbar.js";
 
+
+const AVAILABLE_SETS = [
+  { id: "base1", name: "Base Set" },
+  { id: "base2", name: "Jungle" }
+];
+
 // Import the function to get the regex for name matching
 // Commented out for now, as it was not working properly with the search functionality
 // import { getNameMatchRegex } from "../assets/searchValidate.js"; //
@@ -21,13 +27,37 @@ class Card {
   // define class properties
   constructor() {
     this.cardBackImage = "assets/images/cardBack.png"; // default card back image
-    this.apiUrl = "https://api.pokemontcg.io/v2/cards?q=set.id:base1"; // base set API URL
+    this.apiUrl = "https://api.pokemontcg.io/v2/cards?q=set.id:"; // API URL
     this.defaultContainer = "cardsContainer"; // default container ID for cards
   }
+  //////////////////////////////////////// Rendering Page Layout //////////////////////////////////////////////////////
 
-  //////////////////////////////////////// Rendering Methods - Cards //////////////////////////////////////////////////////
 
-  // This method renders the collection layout
+  // This method renders the base set layout
+  renderSetLayout(setName) {
+    // Get the container by class name
+    const container = document.getElementById("cards-container");
+
+    if (!container) return;
+
+    // Check if the container exists and then set its inner HTML, this html gets injected into cards.html when the page 'base set' is selected
+    container.innerHTML = `
+      <div class="container mt-4">
+        <!-- Back Button -->
+        <a href="sets.html" class="btn pixel-font btn-outline-dark btn-sm mb-2">← Back</a>
+
+        <div class="row align-items-center mb-3 border-bottom border-2 border-dark pb-2">
+          <div class="col">
+            <h2 class="pixel-font mb-0">${setName}</h2>
+          </div>
+        </div>
+
+        <div id="cardsContainer" class="row g-4 justify-content-center"></div>
+      </div>
+    `;
+  }
+
+    // This method renders the collection layout
   renderCollectionLayout() {
     // Get the container by class name
     const container = document.getElementById("cards-container");
@@ -51,27 +81,27 @@ class Card {
     `;
   }
 
-  // This method renders the base set layout
-  renderBaseLayout() {
-    // Get the container by class name
-    const container = document.getElementById("cards-container");
+    /* Work On getting set's working later
+  createSetLinkRow(id, name) {
+    const container = document.getElementById("setsList")
 
-    // Check if the container exists and then set its inner HTML, this html gets injected into cards.html when the page 'base set' is selected
-    container.innerHTML = `
-      <div class="container mt-4">
-        <!-- Back Button -->
-        <a href="sets.html" class="btn pixel-font btn-outline-dark btn-sm mb-2">← Back</a>
 
-        <div class="row align-items-center mb-3 border-bottom border-2 border-dark pb-2">
-          <div class="col">
-            <h2 class="pixel-font mb-0">Base Set</h2>
-          </div>
-        </div>
+    const rowSet = document.createElement("div");
+    rowSet.className = "mb-3";
 
-        <div id="cardsContainer" class="row g-4 justify-content-center"></div>
+    rowSet.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center set-header">
+        <a href="cards.html?set=${id}&name=${encodeURIComponent(name)}" class="set-link fs-4">
+          ${name}
+        </a>
       </div>
+      <hr class="custom-hr">
     `;
-  }
+
+    container.appendChild(rowSet);
+
+    return rowSet;
+  } */
 
   /*
   // This method renders the cards layout for the cards page
@@ -101,7 +131,7 @@ class Card {
   */
 
 
-  ////////////////////////////////////////Rendering Methods - Fetch //////////////////////////////////////////////////////
+  //////////////////////////////////////// Fetch And Render Cards //////////////////////////////////////////////////////
 
   // This method fetches cards from the API and renders them into the specified container
   fetchAndRender(setName, containerId) {
@@ -145,7 +175,48 @@ class Card {
   }
   */
 
-  // This method renders the collection cards from localStorage
+
+
+  //////////////////////////////////////// Collection Handling //////////////////////////////////////////////////////
+
+  /*
+  // This method creates a card element with buttons for incrementing, decrementing and adding to collection
+  createCardElement(card) {
+    // Create a column element for the card with a div wrapped around
+    const col = document.createElement("div");
+    // Set the class for the column to style it properly
+    col.className =
+      "col-6 col-sm-4 col-md-3 col-lg-5th d-flex flex-column align-items-center card-col";
+
+    // Set a data attribute for the card ID
+    const cardImage = card?.images?.small || this.cardBackImage;
+    const cardName = card?.name || "Pokémon Card Back";
+
+    // Set the inner HTML of the column with the card image, name, counter and buttons
+    col.innerHTML = `
+    <img
+      src="${cardImage}"
+      alt="${cardName}"
+      class="img-fluid mb-3"
+      style="max-height: 200px;"
+    >
+
+    <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+      <button class="btn btn-outline-secondary btn-sm decrement">-</button>
+      <span class="counter">0</span>
+      <button class="btn btn-outline-secondary btn-sm increment">+</button>
+    </div>
+
+    <button class="btn btn-primary btn-sm add-card">Add</button>
+  `;
+
+    // Call the setupCardButtons method to add functionality to the buttons
+    this.setupCardButtons(col, card);
+    return col;
+  }
+  */
+
+    // This method renders the collection cards from localStorage
   renderCollectionCards() {
     // Get the container and total cards count elements
     const cardsContainer = document.getElementById("cardsContainer");
@@ -220,43 +291,6 @@ class Card {
     totalCardsCount.textContent = totalCount;
   }
 
-  //////////////////////////////////////// Card Handling //////////////////////////////////////////////////////
-
-
-  // This method creates a card element with buttons for incrementing, decrementing and adding to collection
-  createCardElement(card) {
-    // Create a column element for the card with a div wrapped around
-    const col = document.createElement("div");
-    // Set the class for the column to style it properly
-    col.className =
-      "col-6 col-sm-4 col-md-3 col-lg-5th d-flex flex-column align-items-center card-col";
-
-    // Set a data attribute for the card ID
-    const cardImage = card?.images?.small || this.cardBackImage;
-    const cardName = card?.name || "Pokémon Card Back";
-
-    // Set the inner HTML of the column with the card image, name, counter and buttons
-    col.innerHTML = `
-    <img
-      src="${cardImage}"
-      alt="${cardName}"
-      class="img-fluid mb-3"
-      style="max-height: 200px;"
-    >
-
-    <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
-      <button class="btn btn-outline-secondary btn-sm decrement">-</button>
-      <span class="counter">0</span>
-      <button class="btn btn-outline-secondary btn-sm increment">+</button>
-    </div>
-
-    <button class="btn btn-primary btn-sm add-card">Add</button>
-  `;
-
-    // Call the setupCardButtons method to add functionality to the buttons
-    this.setupCardButtons(col, card);
-    return col;
-  }
 
 
   // This method adds a card to the collection in localStorage
@@ -280,7 +314,7 @@ class Card {
     localStorage.setItem("myCollection", JSON.stringify(collection));
   }
 
-
+  /*
   // This method sets up the buttons for incrementing, decrementing and adding to collection for each card
   setupCardButtons(cardElement, card) {
     // Get the buttons and counter elements from the card element, get the decrement, increment and add buttons plus the counter span which is used to display the count of cards to be added
@@ -319,9 +353,9 @@ class Card {
       }
     });
   }
+  */
 
-
-  //////////////////////////////////////// Toast Handling //////////////////////////////////////////////////////
+//////////////////////////////////////// Toast Handling //////////////////////////////////////////////////////
 
 
   // This method shows a toast message at the top right corner of the screen when a card is added to the collection
@@ -348,12 +382,19 @@ class Card {
   }
 }
 
+
+//////////////////////////////////////// Page Routing & Initialization //////////////////////////////////////////////////////
+
 // Initialize the Card class and set up event listeners when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar("cards"); // Load the navbar for the cards page
 
   // Create an instance of the Card class
   const cardApp = new Card();
+
+  // Get the base layout name and id
+  const baseSetID = AVAILABLE_SETS[0].id;
+  const setName = AVAILABLE_SETS[0].name;
 
   // Get the URL parameters to determine which set is selected
   const params = new URLSearchParams(window.location.search);
@@ -364,8 +405,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Render the appropriate layout based on the selected set or if it's the cards page
   if (selectedSet === "base") {
-    cardApp.renderBaseLayout();
-    cardApp.fetchAndRender("base1", "cardsContainer");
+    cardApp.renderSetLayout(setName);
+    cardApp.fetchAndRender(
+      baseSetID,
+      "cardsContainer"
+    );
   } else if (selectedSet === "collection") {
     cardApp.renderCollectionLayout();
     cardApp.renderCollectionCards();
@@ -373,11 +417,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // This is the generic "All Cards" page
     // cardApp.renderCardsLayout(); //  renders search bar + container
     cardApp.fetchAndRender(
-      "base1",
+      baseSetID,
       "cardsContainer"
     );
   } else {
-    cardApp.renderBaseLayout(); // fallback
+    cardApp.renderSetLayout(); // fallback
     cardApp.fetchAndRender(cardApp.apiUrl, cardApp.defaultContainer); // default to base set
   }
 });
