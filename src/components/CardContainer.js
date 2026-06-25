@@ -19,7 +19,8 @@ export function CardContainer({ cards }) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "row g-4 justify-content-center";
 
-  let nodes = cards.map((card) => {
+  // Transform raw card data into styled UI components with layout and button logic
+  const nodes = cards.map((card) => {
 
     const cardId = card?.id || card?.cardId || "unknown-id";
     const cardName = card?.name || "Unknown Card";
@@ -36,20 +37,11 @@ export function CardContainer({ cards }) {
 
 
   nodes.forEach((cardNode) => {
-    cardContainer.appendChild(cardNode);
+    const col = document.createElement("div");
+    col.className = "col-6 col-sm-4 col-md-3 col-lg-5th d-flex flex-column align-items-center card-col";
+    col.appendChild(cardNode);
+    cardContainer.appendChild(col);
   });
-
-
-
-/*
-  const col = document.createElement("div");
-  col.className = "col-6 col-sm-4 col-md-3 col-lg-5th d-flex flex-column align-items-center card-col";
-  col.appendChild(card);
-  cardContainer.appendChild(col);
-
-*/
-
-
 
   return cardContainer;
 }
