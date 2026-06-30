@@ -1,14 +1,5 @@
 /*
   CARD COMPONENT
-
-  Props:
-    - name: The name of the card
-    - image: The URL of the card's image
-    - count: The number of this card in the collection or if it's a new card, the initial count
-
-  Functionality:
-    - Creates a card element with the specified properties
-
   ToAddFunctionality:
     - Handle the increment and decrement of the card count
     - Add the card to the collection when the "Add" button is clicked
@@ -18,18 +9,24 @@
    - Disable the "Add" button when no click of plus has happened
 */
 
-import { Button } from "./Button.js";
+import { Counter } from "./Counter";
 
-export function Card({ id, name, image, count, }) {
-  // 1. Create the top-level container element (e.g., a div)
+/**
+ * Reusable component for a single card object
+ * @param {object} cardData - The configuration object for the card.
+ * @param {number} cardData.id - Unique id for each card.
+ * @param {string} cardData.name - Card name.
+ * @param {string} cardData.image - Image URL for each individual card.
+ * @returns {HTMLElement} The completed DOM container for the card.
+ */
+export function Card({ id, name, image, count }) {
+  // Create div to hold the card and its attributes
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-wrapper text-center p-3";
 
-  // Declare a count variable that can be updated
-  let currentCount = count;
+  let cardCount = count;
 
-
-  // 2. Create the Image element
+  // Create the Image element with attributes for each card and append to cardContainer
   const img = document.createElement("img");
   img.src = image;
   img.alt = name;
@@ -38,28 +35,25 @@ export function Card({ id, name, image, count, }) {
   img.loading = "lazy";
   cardContainer.appendChild(img);
 
-  // 3. This matches your visible card title/name placement
+  // Displays name of Pokémon Card and appends to cardContainer
   const nameElement = document.createElement("h3");
   nameElement.className = "card-name h5 mb-2";
   nameElement.textContent = name;
   cardContainer.appendChild(nameElement);
 
+  const counterElement = Counter({
+    count: cardCount
+  })
+
+  cardContainer.appendChild(counterElement);
+
 
   // Append the entire counter section to the main container
-  cardContainer.appendChild(counterDiv);
-
-  // 8. Create and append the Add button node using your component
-  const addBtn = Button({
-    label: "Add",
-    classNames: "add-card w-100 mt-2",
-    primaryBtn: true
-  });
-  cardContainer.appendChild(addBtn);
+  // cardContainer.appendChild(counterDiv);
 
   return cardContainer;
+
 }
-
-
 
   /*
     addButton.addEventListener("click", () => {
