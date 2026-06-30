@@ -18,7 +18,7 @@
 import { Card } from "./Card.js";
 
 
-export function CardContainer({ cards }) {
+export function CardContainer({ cards, onAddCard }) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "row g-4 justify-content-center";
 
@@ -29,12 +29,19 @@ export function CardContainer({ cards }) {
     const cardName = card?.name || "Unknown Card";
     const cardImage = card?.images?.small || card?.image || "assets/images/cardBack.png";
     const initialCount = card?.count || 0;
+    const marketPrice = card?.cardmarket?.prices?.averageSellPrice || card?.marketPrice || 0;
 
     return Card({
       id: cardId,
       name: cardName,
       image: cardImage,
-      count: initialCount
+      count: initialCount,
+      price: marketPrice,
+      onAdd: (cardObj) => {
+        if (onAddCard) {
+          onAddCard(cardObj);
+        }
+      }
     });
   });
 
