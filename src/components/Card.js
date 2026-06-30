@@ -19,7 +19,7 @@ import { Counter } from "./Counter";
  * @param {string} cardData.image - Image URL for each individual card.
  * @returns {HTMLElement} The completed DOM container for the card.
  */
-export function Card({ id, name, image, count }) {
+export function Card({ id, name, image, count, price, onAdd }) {
   // Create div to hold the card and its attributes
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-wrapper text-center p-3";
@@ -42,7 +42,17 @@ export function Card({ id, name, image, count }) {
   cardContainer.appendChild(nameElement);
 
   const counterElement = Counter({
-    count: cardCount
+    count: cardCount,
+    onAddClick: (chosenQuantity) => {
+      if (onAdd) {
+        onAdd({
+          id,
+          name,
+          images: { small: image },
+          chosenQuantity
+        })
+      }
+    }
   })
 
   cardContainer.appendChild(counterElement);
