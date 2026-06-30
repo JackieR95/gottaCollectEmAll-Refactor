@@ -81,55 +81,6 @@ class Card {
     `;
   }
 
-    /* Work On getting set's working later
-  createSetLinkRow(id, name) {
-    const container = document.getElementById("setsList")
-
-
-    const rowSet = document.createElement("div");
-    rowSet.className = "mb-3";
-
-    rowSet.innerHTML = `
-      <div class="d-flex justify-content-between align-items-center set-header">
-        <a href="cards.html?set=${id}&name=${encodeURIComponent(name)}" class="set-link fs-4">
-          ${name}
-        </a>
-      </div>
-      <hr class="custom-hr">
-    `;
-
-    container.appendChild(rowSet);
-
-    return rowSet;
-  } */
-
-  /*
-  // This method renders the cards layout for the cards page
-  renderCardsLayout() {
-    // Get the container by class name
-    const container = document.getElementById("cards-container");
-    // Check if the container exists
-    if (!container) {
-      console.warn("cards-container not found"); // Log a warning if the container is not found
-      return;
-    }
-
-    // Set the inner HTML of the container, this html gets injected into cards.html when the page 'all cards' is selected
-    container.innerHTML = `
-    <!-- Text Cards -->
-  <div class="text-center mt-4">
-    <h1 class="pixel-text">All Cards</h1>
-  </div>
-
-    <!-- Cards row -->
-    <div class="row justify-content-between text-center">
-      <div id="cardsContainer" class="row g-4 justify-content-center">
-      </div>
-    </div>
-    `;
-  }
-  */
-
 
   //////////////////////////////////////// Fetch And Render Cards //////////////////////////////////////////////////////
 
@@ -159,62 +110,7 @@ class Card {
       });
   }
 
-  /*
-  // This method renders the cards into the specified container
-  renderCards(cardsArray, containerId) {
-    //Get the container by ID
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
-
-    // Loop through the cards array and create card elements
-    cardsArray.forEach((card) => {
-      const cardElem = this.createCardElement(card);
-      // Check if the card element is valid before appending, then append it to the container
-      container.appendChild(cardElem);
-    });
-  }
-  */
-
-
-
   //////////////////////////////////////// Collection Handling //////////////////////////////////////////////////////
-
-  /*
-  // This method creates a card element with buttons for incrementing, decrementing and adding to collection
-  createCardElement(card) {
-    // Create a column element for the card with a div wrapped around
-    const col = document.createElement("div");
-    // Set the class for the column to style it properly
-    col.className =
-      "col-6 col-sm-4 col-md-3 col-lg-5th d-flex flex-column align-items-center card-col";
-
-    // Set a data attribute for the card ID
-    const cardImage = card?.images?.small || this.cardBackImage;
-    const cardName = card?.name || "Pokémon Card Back";
-
-    // Set the inner HTML of the column with the card image, name, counter and buttons
-    col.innerHTML = `
-    <img
-      src="${cardImage}"
-      alt="${cardName}"
-      class="img-fluid mb-3"
-      style="max-height: 200px;"
-    >
-
-    <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
-      <button class="btn btn-outline-secondary btn-sm decrement">-</button>
-      <span class="counter">0</span>
-      <button class="btn btn-outline-secondary btn-sm increment">+</button>
-    </div>
-
-    <button class="btn btn-primary btn-sm add-card">Add</button>
-  `;
-
-    // Call the setupCardButtons method to add functionality to the buttons
-    this.setupCardButtons(col, card);
-    return col;
-  }
-  */
 
     // This method renders the collection cards from localStorage
   renderCollectionCards() {
@@ -314,46 +210,6 @@ class Card {
     localStorage.setItem("myCollection", JSON.stringify(collection));
   }
 
-  /*
-  // This method sets up the buttons for incrementing, decrementing and adding to collection for each card
-  setupCardButtons(cardElement, card) {
-    // Get the buttons and counter elements from the card element, get the decrement, increment and add buttons plus the counter span which is used to display the count of cards to be added
-    const decrementBtn = cardElement.querySelector(".decrement");
-    const incrementBtn = cardElement.querySelector(".increment");
-    const counter = cardElement.querySelector(".counter");
-    const addButton = cardElement.querySelector(".add-card");
-
-    // Add event listeners to the buttons
-    decrementBtn.addEventListener("click", () => {
-      let value = parseInt(counter.textContent, 10);
-      if (value > 0) counter.textContent = value - 1;
-    });
-
-    incrementBtn.addEventListener("click", () => {
-      let value = parseInt(counter.textContent, 10);
-      counter.textContent = value + 1;
-    });
-
-    addButton.addEventListener("click", () => {
-      const count = parseInt(counter.textContent, 10) || 0;
-
-      // Check if the card has an ID and count is greater than 0
-      if (card?.id && count > 0) {
-        for (let i = 0; i < count; i++) {
-          this.addToCollection(card); // Add the card to the collection
-        }
-        // Reset counter to 0
-        counter.textContent = "0";
-
-        // Show toast
-        this.showToast(
-          `${count} ${card.name} card${count > 1 ? "s" : ""
-          } added to your collection!`
-        );
-      }
-    });
-  }
-  */
 
 //////////////////////////////////////// Toast Handling //////////////////////////////////////////////////////
 
