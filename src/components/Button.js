@@ -1,15 +1,13 @@
-/*
-  BUTTON COMPONENT
 
-  Props:
-    - label: The text to display on the button
-    - classNames: Additional CSS classes to apply to the button
-    - onClick: A function to call when the button is clicked
-    - primaryBtn: A boolean indicating whether the button should be styled as primary
-
-  Functionality:
-    - Creates a button element with the specified properties
-*/
+/**
+ * Reusable Button Component.
+ * @param {Object} buttonData - The Configuration object for the button.
+ * @param {string} buttonData.label - The label text displayed inside the button.
+ * @param {string} buttonData.classNames - Additional css/bootstrap class names for styling
+ * @param {function()|null} [buttonData.onClick = null] - The click handler function, or null if decorative
+ * @param {boolean} buttonData.primaryBtn - True if button should use primary styling
+ * @returns {HTMLButtonElement} - Returns the completed Button DOM element.
+ */
 export function Button({ label, classNames, onClick = null, primaryBtn }) {
     const button = document.createElement('button');
     button.textContent = label;
