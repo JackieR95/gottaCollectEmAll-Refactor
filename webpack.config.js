@@ -21,9 +21,9 @@ const fileNamePrefix = isProduction? '[chunkhash].' : '';
 module.exports = {
     mode: !isProduction ? 'development': 'production',
     entry: {
-      dashboard: './src/js/dashboard.js',
-      index: './src/js/index.js',
-      sets: './src/js/sets.js',
+      dashboard: './src/client/dashboard.js',
+      cards: './src/client/cards.js',
+      sets: './src/client/sets.js',
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -38,11 +38,11 @@ module.exports = {
       },
 
     devMiddleware: {
-      index: 'dashboard.html',
+      index: 'index.html',
     },
       open: true,
       historyApiFallback: {
-        index: '/dashboard.html',
+        index: '/index.html',
       },
     },
     /* no separate source map files in production */
@@ -79,14 +79,14 @@ module.exports = {
     },
     plugins: [
       new htmlWebpackPlugin({
-        template: path.resolve(__dirname, "./src/dashboard.html"),
+        template: path.resolve(__dirname, "./src/index.html"),
         chunks: ["dashboard"],
         inject: "body",
-        filename: "dashboard.html",
+        filename: "index.html",
       }),
       new htmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/cards.html"),
-        chunks: ["index"],
+        chunks: ["cards"],
         inject: "body",
         filename: "cards.html",
       }),
