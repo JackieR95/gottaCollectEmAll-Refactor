@@ -10,7 +10,7 @@ import { Button } from "./Button.js";
  * @param {number} counterData.count - The Initial count value to display.
  * @returns {HTMLElement} The completed DOM element container for the counter
  */
-export function Counter({ count }) {
+export function Counter({ count, onAddClick }) {
   // 4. Create the d-flex counter container
   const counterDiv = document.createElement("div");
   counterDiv.className =
@@ -57,6 +57,11 @@ export function Counter({ count }) {
     label: "Add",
     classNames: "add-card w-50 mt-2",
     primaryBtn: true,
+    onClick: () => {
+      if (onAddClick) {
+        onAddClick(currentCount);
+      }
+    }
   });
 
   counterDiv.appendChild(decBtn);
