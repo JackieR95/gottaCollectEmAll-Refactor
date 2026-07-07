@@ -8,6 +8,7 @@ Lab: Final Project - GottaCollectEmAll
 import "../utility/general.js";
 import { CardContainer } from "../components/CardContainer.js";
 import { StorageService } from "../utility/storageService.js";
+import { PokemonTcgClient } from "../utility/PokemonTcgClient.js";
 
 // Import the function to load the navbar
 import { Navbar } from "../components/Navbar.js";
@@ -23,9 +24,12 @@ const AVAILABLE_SETS = [
 
 const CARD_BACK_IMAGE = "../assets/images/cardBack.png";
 const API_URL = "https://api.pokemontcg.io/v2/cards?q=set.id:";
+// const BASE_URL =
+//const SET_URL = "https://api.pokemontcg.io/v2/sets?select=id"
+// const SET_NAME_URL = "https://api.pokemontcg.io/v2/sets?select=name"
 
-// import { getNameMatchRegex } from "../assets/searchValidate.js"; //
 function getUrlSetName() {
+
   // Get value of the set param from url query string
   return "base1";
 }
