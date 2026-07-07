@@ -1,3 +1,0 @@
-function Navbar({ title, logo }) {
-
-}
