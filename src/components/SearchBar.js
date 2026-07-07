@@ -140,3 +140,28 @@ i wasnt able to get it to work, i would have to debug it more, in console it sho
 
 
 */
+
+/* html code for search bar
+        <!--<div id="cards-container"></div>-->
+
+            <!-- Text Cards -->
+
+
+            <!-- Search Bar // Commented out search bar because of time and because i couldnt get it to work
+            <div class="row justify-content-center mb-2 mt-5">
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search Pokémon cards..."
+                  id="searchBar"
+                >
+              </div>
+
+
+             Card count text // Commented out for now becaus of time
+            <div style="font-size: 1.1rem; font-weight: 600;">
+              1 / 100 Cards
+            </div>
+            -->
+*/
