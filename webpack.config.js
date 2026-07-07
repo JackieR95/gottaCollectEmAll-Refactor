@@ -100,7 +100,7 @@ module.exports = {
       new webpack.DefinePlugin({
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         SERVER_URL: JSON.stringify(process.env.SERVER_URL),
-        P_TCG_KEY: JSON.stringify(process.env.P_TCG_KEY),
+        P_TCG_KEY: JSON.stringify(process.env.POKEMON_TCG_KEY),
       }),
       new copyPlugin({
         patterns: [
