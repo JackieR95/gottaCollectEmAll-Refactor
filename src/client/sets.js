@@ -6,6 +6,7 @@ Lab: Final Project - GottaCollectEmAll
 
 // Shared CSS (Bootstrap + your styles)
 import '../utility/general.js';
+import { PokemonTcgClient } from "../utility/PokemonTcgClient.js";
 
 // Import the navbar HTML and load it
 import { Navbar } from '../components/Navbar.js';
