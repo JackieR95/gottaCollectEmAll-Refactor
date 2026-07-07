@@ -12,15 +12,22 @@ export class PokemonTcgClient {
   };
 
   //Write some config variables
+  pageSize = 20;
+  currentPage = 1;
+  currentSearchQuery = "";
 
   async send(request) {
+
     let queryString = request.toString();
     let hasQueryString = queryString.length > 0 ? true : false;
+
     let fullURL = PokemonTcgClient.BASE_URL + request.endpoint +  (hasQueryString ? "?" + queryString : "");
 
-    let response = await fetch(fullURL, this.headers);
+    let response = await fetch(fullURL, { headers: this.headers });
 
-    console.log("url response: " + response);
-    return response;
+    let result = await response.json();
+
+    console.log("url response: " + result);
+    return result;
   }
 }
