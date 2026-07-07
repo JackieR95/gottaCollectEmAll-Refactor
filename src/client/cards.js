@@ -9,6 +9,8 @@ import "../utility/general.js";
 import { CardContainer } from "../components/CardContainer.js";
 import { StorageService } from "../utility/storageService.js";
 import { PokemonTcgClient } from "../utility/PokemonTcgClient.js";
+import { PokemonTcgCardsRequest } from "../utility/pokemonTcgCardsRequest.js";
+import { PokemonTcgSetsRequest } from "../utility/pokemonTcgSetsRequest.js";
 
 // Import the function to load the navbar
 import { Navbar } from "../components/Navbar.js";
