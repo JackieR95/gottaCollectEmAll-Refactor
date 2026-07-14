@@ -46,7 +46,7 @@ module.exports = {
       },
     },
     /* no separate source map files in production */
-    devtool: !isProduction ? 'source-map' : 'inline-source-map',
+    devtool: !isProduction ? 'inline-source-map' : false,
     module: {
       rules: [
         {
@@ -100,7 +100,7 @@ module.exports = {
       new webpack.DefinePlugin({
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         SERVER_URL: JSON.stringify(process.env.SERVER_URL),
-        P_TCG_KEY: JSON.stringify(process.env.POKEMON_TCG_KEY),
+        POKEMON_TCG_KEY: JSON.stringify(process.env.POKEMON_TCG_KEY),
       }),
       new copyPlugin({
         patterns: [
