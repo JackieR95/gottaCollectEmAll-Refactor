@@ -17,7 +17,7 @@
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "css-loader": "^6.11.0",
-        "dotenv": "^16.0.3",
+        "dotenv": "^17.4.2",
         "html-webpack-plugin": "^5.5.0",
         "json-server": "^0.17.1",
         "mini-css-extract-plugin": "^2.6.1",
@@ -35,8 +35,9 @@
         "babel-loader": "^8.2.5",
         "bootstrap": "^5.3.6",
         "regenerator-runtime": "^0.13.9",
-        "toastr": "^2.1.4",
         "sass-loader": "^16.0.5",
-        "style-loader": "^3.3.4"
+        "style-loader": "^3.3.4",
+        "toastr": "^2.1.4",
+        "react": "file:./dev_modules/react"
     }
 }
