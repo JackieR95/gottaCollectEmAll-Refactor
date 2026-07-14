@@ -5,113 +5,45 @@ Lab: Final Project - GottaCollectEmAll
 */
 
 // Shared CSS (Bootstrap + your styles)
-import '../utility/general.js';
-import { PokemonTcgClient } from "../utility/PokemonTcgClient.js";
-import { PokemonTcgSetsRequest } from '../utility/pokemonTcgSetsRequest.js';
+import "../utility/general.js";
+import { TcgClient } from "react";
+import { TcgSetsRequest } from "../api/pokemon/TcgSetsRequest.js";
+import { Sets } from "../components/Sets.js";
 
 // Import the navbar HTML and load it
-import { Navbar } from '../components/Navbar.js';
+import { Navbar } from "../components/Navbar.js";
 
 // Function to load the navbar and load the top expensive cards and my collection preview for the Sets page
-document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("navbar-container");
+document.addEventListener("DOMContentLoaded", async () => {
+  const containerNavbar = document.getElementById("navbar-container");
+  const setContainer = document.getElementById("set-container");
   // If currentPage is not provided, default to an empty string
-  if (container) {
-    container.innerHTML = Navbar("sets");
+  if (setContainer) {
+    containerNavbar.innerHTML = Navbar("sets");
   }
 
-  renderTopExpensiveCards("setPreviewContainer", 5);// Top 5 expensive base set cards
-  renderMyCollectionPreview("myCollectionContainer", 5); // My collection preview
+  let client = new TcgClient(POKEMON_TCG_KEY);
+  let setsRequest = new TcgSetsRequest();
+
+  let setResponse = await client.send(setsRequest);
+  let allSets = setResponse.sets();
+
+
+
+  allSets.forEach((setObj) => {
+    setsRequest.getParams(setObj.id, setObj.name);
+    console.log(`Processing Set -> ID: ${setObj.id} | Name: ${setObj.name}`);
+
+    // 2. This variable is created fresh for every single set in the loop
+    const setElement = Sets({
+      setId: setObj.id,
+      setName: setObj.name,
+    });
+
+    setContainer.appendChild(setElement);
+  });
+
+  //renderTopExpensiveCards("setPreviewContainer", 5);// Top 5 expensive base set cards
+  //renderMyCollectionPreview("myCollectionContainer", 5); // My collection preview
   //updateBaseSetProgressBar(); // Update the base set progress bar, commented out as it wasn't working for me //
 });
-
-const imgUrl = "assets/images/cardBack.png";
-const altText = "Preview Image";
-
-// Function to create a card preview element
-function createCardPreviewElement(imgUrl, altText) {
-
-  // create a column element that creates a div when the used
-  const col = document.createElement("div");
-
-  // Set the class names for the column to ensure proper layout in Bootstrap using col to wrap the card preview in a div
-  col.className = "col-6 col-sm-4 col-md-3 col-lg-2 d-flex justify-content-center";
-
-  // Set the inner HTML of the column to include a card preview with an image wrapped in a div
-  col.innerHTML = `
-    <div class="card-preview">
-      <img src="${imgUrl}" alt="${altText}" class="img-fluid">
-    </div>
-  `;
-
-  // Return the column element
-  return col;
-}
-
-// Function to render the top expensive cards in the specified container
-function renderTopExpensiveCards(containerId, count) {
-  // Get the container element by its ID and clear its content
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-
-  // Fetch the top expensive cards from the Pokémon TCG API
-  const apiUrl = "https://api.pokemontcg.io/v2/cards?q=set.id:base1";
-
-  // Fetch the data from the API
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      // Check if the data is valid and contains cards
-      const cards = data.data;
-
-      // Filter the cards to find those with an average sell price and sort them by price in descending order
-      const cardsWithPrices = cards
-        .filter(card => card.cardmarket?.prices?.averageSellPrice) // Ensure the card has a price
-        .sort((a, b) => b.cardmarket.prices.averageSellPrice - a.cardmarket.prices.averageSellPrice) // Sort by price in descending order
-        .slice(0, count); // Limit to the specified count
-
-      // If no cards found, log a message and return
-      cardsWithPrices.forEach((card) => {
-        const img = card.images?.small || "assets/images/cardBack.png"; // Fallback image if no image is available
-        const alt = card.name || "Card"; // Use the card name as alt text, or fallback to "Card" if not available
-        const col = createCardPreviewElement(img, alt); // Create a card preview element with the image and alt text
-        container.appendChild(col); // Append the card preview element to the container
-      });
-    })
-    .catch(err => {
-      // Log the error if the API call fails
-      console.error("Failed to load top cards:", err);
-      // If the API call fails, render placeholders instead
-      for (let i = 0; i < count; i++) {
-        // Create and append a placeholder card preview element
-        container.appendChild(createCardPreviewElement());
-      }
-    });
-}
-
-// Function to render a preview of the user's collection
-function renderMyCollectionPreview(containerId, count) {
-  // Get the container element by its ID and clear its content
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-
-  // Retrieve the user's collection from localStorage
-  const collection = JSON.parse(localStorage.getItem("myCollection") || "{}");
-  const collectedCards = Object.values(collection);
-
-  // If no cards are collected, show placeholders
-  if (collectedCards.length === 0) {
-    // Show placeholders
-    for (let i = 0; i < count; i++) {
-      container.appendChild(createCardPreviewElement());
-    }
-  } else {
-    // If there are collected cards, create card preview elements for the specified count
-    collectedCards.slice(0, count).forEach(card => {
-      // Create a card preview element with the card's image and name
-      const col = createCardPreviewElement(card.image, card.name);
-      container.appendChild(col); // Append the card preview element to the container
-    });
-  }
-}
-
