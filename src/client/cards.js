@@ -8,9 +8,10 @@ Lab: Final Project - GottaCollectEmAll
 import "../utility/general.js";
 import { CardContainer } from "../components/CardContainer.js";
 import { StorageService } from "../utility/storageService.js";
-import { PokemonTcgClient } from "../utility/PokemonTcgClient.js";
-import { PokemonTcgCardsRequest } from "../utility/pokemonTcgCardsRequest.js";
-import { PokemonTcgSetsRequest } from "../utility/pokemonTcgSetsRequest.js";
+import { TcgClient } from "react";
+import { TcgCardsRequest } from "../api/pokemon/TcgCardsRequest.js";
+import { TcgSetsRequest } from "../api/pokemon/TcgSetsRequest.js";
+import { TcgCardsResponse } from "../api/pokemon/TcgCardsResponse.js";
 
 // Import the function to load the navbar
 import { Navbar } from "../components/Navbar.js";
@@ -25,13 +26,12 @@ const AVAILABLE_SETS = [
 ];
 
 const CARD_BACK_IMAGE = "../assets/images/cardBack.png";
-const API_URL = "https://api.pokemontcg.io/v2/cards?q=set.id:";
+// const API_URL = "https://api.pokemontcg.io/v2/cards?q=set.id:";
 // const BASE_URL =
 //const SET_URL = "https://api.pokemontcg.io/v2/sets?select=id"
 // const SET_NAME_URL = "https://api.pokemontcg.io/v2/sets?select=name"
 
 function getUrlSetName() {
-
   // Get value of the set param from url query string
   return "base1";
 }
@@ -44,48 +44,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (containerNavbar) {
     containerNavbar.innerHTML = Navbar("cards"); // Load the navbar HTML into the container
   }
-  const baseSetID = getUrlSetName();
+
   const setName = AVAILABLE_SETS[0].name;
-  let cards = await getData(baseSetID);
   let label = "Cards In " + setName;
+
+  let client = new TcgClient(POKEMON_TCG_KEY);
+  let cardsRequest = new TcgCardsRequest();
+  let setsRequest = new TcgSetsRequest();
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentSetId = urlParams.get('set');
+
+  console.log("Active Set ID:", currentSetId);
+
+  cardsRequest.setId(currentSetId);
+
+  let cardResponse = await client.send(cardsRequest);
+  const cardsList = cardResponse.cards();
+
+  console.log("cardResponse: ", cardResponse);
+
 
   containerCard.appendChild(
     CardContainer({
-      label,
-      cards,
+      label: cardsList[0].set.name,
+      cards: cardResponse.cards(),
       onAddCard: (cardObj) => {
         addToCollection(cardObj);
       },
     }),
   );
-
-  /*
-    // Get the base layout name and id
-    const setName = AVAILABLE_SETS[0];
-
-    // Get the URL parameters to determine which set is selected
-    const params = new URLSearchParams(window.location.search);
-    const selectedSet = params.get("set"); // e.g., "base" or "collection"
-
-    // Check if the current page is the cards page
-    const isCardsPage = window.location.pathname.includes("cards.html");
-
-    // Render the appropriate layout based on the selected set or if it's the cards page
-    if (selectedSet === "base") {
-      renderLayout("base", setName);
-      fetchAndRender(baseSetID, "cardsContainer");
-    } else if (selectedSet === "collection") {
-      renderLayout("collection", setName);
-      const storedCollection = pokemonCardStorage.loadAll();
-      renderCollectionPage();
-    } else if (isCardsPage) {
-      fetchAndRender(baseSetID, "cardsContainer");
-    } else {
-      renderSetLayout(); // fallback
-      fetchAndRender(API_URL, "cardsContainer"); // default to base set
-    }
-    */
 });
+
 
 ///////////////////////////////// Rendering Page Layout //////////////////////////////////////////////////////
 
@@ -103,27 +94,7 @@ function renderLayout(selectedPage, setName) {
   }
 }
 
-//////////////////////////////////////// Fetch And Render Cards //////////////////////////////////////////////////////
 
-// This method fetches cards from the API and renders them into the specified container
-async function getData(setName = "") {
-  let url = API_URL + setName;
-
-  return fetch(url)
-    .then((response) => {
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`); // Throw an error if the response is not ok
-      return response.json();
-    })
-    .then((json) => {
-      // Get the cards from the data
-      return json.data;
-      // Call the renderCards method to render the fetched cards into the specified container
-    })
-    .catch((error) => {
-      console.error("Failed to fetch cards:", error);
-    });
-}
 
 //////////////////////////////////////// Collection Handling //////////////////////////////////////////////////////
 
