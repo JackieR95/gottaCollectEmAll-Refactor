@@ -28,10 +28,14 @@ export function CardContainer({ cards, label, onAddCard }) {
   // 2. Create the h1 heading
   const heading = document.createElement("h1");
   heading.classList.add("pixel-text");
-  heading.textContent = label;
+  heading.textContent = label + " Set";
+
+  const hrLine = document.createElement("hr");
+  hrLine.className = "border-dark border-2";
 
   // 3. Append the heading to the container div
   containerDiv.appendChild(heading);
+  containerDiv.appendChild(hrLine);
   cardContainer.appendChild(containerDiv);
 
   // Now, 'containerDiv' holds the entire structure and can be appended to the DOM.
